@@ -111,7 +111,7 @@ const AnalysisResults: React.FC<AnalysisResultsProps> = ({ data }) => {
               <Progress value={data.motility.immotile} className="h-3" />
             </div>
           </CardContent>
-        </div>
+        </Card>
 
         {/* Morphology and Additional Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
