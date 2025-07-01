@@ -7,11 +7,12 @@ import AuthDialog from '@/components/AuthDialog';
 import VideoUpload from '@/components/VideoUpload';
 import AnalysisResults from '@/components/AnalysisResults';
 import Header from '@/components/Header';
+import { useAuth } from '@/hooks/useAuth';
 
 const Index = () => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
   const [analysisData, setAnalysisData] = useState(null);
+  const { user, loading } = useAuth();
 
   const features = [
     {
@@ -36,9 +37,22 @@ const Index = () => {
     }
   ];
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mb-4 animate-pulse">
+            <Microscope className="w-8 h-8 text-white" />
+          </div>
+          <p className="text-gray-600">جاري تحميل التطبيق...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <Header onAuthClick={() => setIsAuthOpen(true)} currentUser={currentUser} />
+      <Header onAuthClick={() => setIsAuthOpen(true)} />
       
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8">
@@ -60,10 +74,10 @@ const Index = () => {
             <Button 
               size="lg" 
               className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
-              onClick={() => setIsAuthOpen(true)}
+              onClick={() => user ? document.getElementById('analysis-section')?.scrollIntoView({ behavior: 'smooth' }) : setIsAuthOpen(true)}
             >
               <Upload className="w-5 h-5 mr-2" />
-              ابدأ التحليل الآن
+              {user ? 'ابدأ التحليل الآن' : 'سجل دخولك للبدء'}
             </Button>
             <Button 
               variant="outline" 
@@ -111,8 +125,8 @@ const Index = () => {
       </section>
 
       {/* Analysis Section */}
-      {currentUser && (
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
+      {user && (
+        <section id="analysis-section" className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <VideoUpload onAnalysisComplete={setAnalysisData} />
@@ -148,7 +162,6 @@ const Index = () => {
       <AuthDialog 
         isOpen={isAuthOpen} 
         onClose={() => setIsAuthOpen(false)}
-        onAuthSuccess={setCurrentUser}
       />
     </div>
   );

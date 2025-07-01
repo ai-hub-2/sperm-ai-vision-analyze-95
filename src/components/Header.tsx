@@ -8,13 +8,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/hooks/useAuth';
 
 interface HeaderProps {
   onAuthClick: () => void;
-  currentUser: any;
 }
 
-const Header: React.FC<HeaderProps> = ({ onAuthClick, currentUser }) => {
+const Header: React.FC<HeaderProps> = ({ onAuthClick }) => {
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, currentUser }) => {
 
           {/* Auth Section */}
           <div className="flex items-center space-x-4 rtl:space-x-reverse">
-            {currentUser ? (
+            {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center space-x-2 rtl:space-x-reverse">
@@ -56,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, currentUser }) => {
                       <User className="w-4 h-4 text-white" />
                     </div>
                     <span className="hidden sm:inline text-gray-700">
-                      {currentUser.email || 'المستخدم'}
+                      {user.user_metadata?.full_name || user.email}
                     </span>
                   </Button>
                 </DropdownMenuTrigger>
@@ -65,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, currentUser }) => {
                     <User className="w-4 h-4 mr-2" />
                     الملف الشخصي
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="w-4 h-4 mr-2" />
                     تسجيل الخروج
                   </DropdownMenuItem>

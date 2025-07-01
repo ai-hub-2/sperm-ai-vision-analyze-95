@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -12,16 +12,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useAuth } from '@/hooks/useAuth';
 
 interface AuthDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onAuthSuccess: (user: any) => void;
 }
 
-const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, onAuthSuccess }) => {
+const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose }) => {
+  const { signIn, signUp } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -34,40 +37,48 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, onAuthSuccess 
       ...prev,
       [e.target.name]: e.target.value
     }));
+    if (error) setError(null);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
     
-    // Simulate API call
-    setTimeout(() => {
-      const mockUser = {
-        id: '1',
-        email: formData.email,
-        fullName: 'مستخدم تجريبي'
-      };
-      onAuthSuccess(mockUser);
-      setIsLoading(false);
+    const { error } = await signIn(formData.email, formData.password);
+    
+    if (error) {
+      setError(error.message);
+    } else {
       onClose();
-    }, 1500);
+    }
+    
+    setIsLoading(false);
   };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      const mockUser = {
-        id: '1',
-        email: formData.email,
-        fullName: formData.fullName
-      };
-      onAuthSuccess(mockUser);
+    setError(null);
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('كلمات المرور غير متطابقة');
       setIsLoading(false);
+      return;
+    }
+
+    const { error } = await signUp(formData.email, formData.password, formData.fullName);
+    
+    if (error) {
+      setError(error.message);
+    } else {
+      setError(null);
+      // Show success message - user needs to verify email
+      alert('تم إرسال رابط التفعيل إلى بريدك الإلكتروني');
       onClose();
-    }, 1500);
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -81,6 +92,13 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, onAuthSuccess 
             قم بتسجيل الدخول للوصول إلى نظام التحليل المتطور
           </DialogDescription>
         </DialogHeader>
+
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
@@ -210,6 +228,23 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, onAuthSuccess 
                       <Eye className="h-4 w-4 text-gray-400" />
                     )}
                   </Button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">تأكيد كلمة المرور</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    className="pl-10"
+                    required
+                  />
                 </div>
               </div>
 
