@@ -9,7 +9,113 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      analysis_results: {
+        Row: {
+          concentration: number
+          created_at: string | null
+          filename: string
+          frames_analyzed: number
+          id: string
+          koyeb_job_id: string | null
+          morphology: Json
+          motility: Json
+          original_filename: string
+          ph: number
+          processing_time: number
+          speed_avg: number
+          sperm_count: number
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+          video_duration: number
+          video_url: string
+          vitality: number
+          volume: number
+        }
+        Insert: {
+          concentration: number
+          created_at?: string | null
+          filename: string
+          frames_analyzed: number
+          id?: string
+          koyeb_job_id?: string | null
+          morphology: Json
+          motility: Json
+          original_filename: string
+          ph: number
+          processing_time: number
+          speed_avg: number
+          sperm_count: number
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          video_duration: number
+          video_url: string
+          vitality: number
+          volume: number
+        }
+        Update: {
+          concentration?: number
+          created_at?: string | null
+          filename?: string
+          frames_analyzed?: number
+          id?: string
+          koyeb_job_id?: string | null
+          morphology?: Json
+          motility?: Json
+          original_filename?: string
+          ph?: number
+          processing_time?: number
+          speed_avg?: number
+          sperm_count?: number
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          video_duration?: number
+          video_url?: string
+          vitality?: number
+          volume?: number
+        }
+        Relationships: []
+      }
+      chat_history: {
+        Row: {
+          ai_response: string
+          analysis_id: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+          user_message: string
+        }
+        Insert: {
+          ai_response: string
+          analysis_id: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+          user_message: string
+        }
+        Update: {
+          ai_response?: string
+          analysis_id?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+          user_message?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_history_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analysis_results"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
