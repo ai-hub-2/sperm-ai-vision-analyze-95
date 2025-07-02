@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Camera, Video, Square, Circle, RotateCcw, FlashOff, FlashOn, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { Camera, Video, Square, Circle, RotateCcw, Flashlight, FlashlightOff, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -66,21 +66,16 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onMediaCaptured, onClose,
     setCameraReady(false);
   }, []);
 
-  const toggleFlash = useCallback(async () => {
-    if (streamRef.current) {
-      const videoTrack = streamRef.current.getVideoTracks()[0];
-      if (videoTrack && 'applyConstraints' in videoTrack) {
-        try {
-          await videoTrack.applyConstraints({
-            advanced: [{ torch: !flashEnabled }]
-          });
-          setFlashEnabled(!flashEnabled);
-        } catch (error) {
-          console.error('فلاش غير متاح:', error);
-        }
-      }
-    }
-  }, [flashEnabled]);
+  const toggleFlash = useCallback(() => {
+    // Flash functionality is not supported in web browsers
+    // This is just a UI toggle for now
+    setFlashEnabled(!flashEnabled);
+    toast({
+      title: "معلومة",
+      description: "وظيفة الفلاش غير متاحة في المتصفحات الحالية",
+      variant: "default"
+    });
+  }, [flashEnabled, toast]);
 
   const switchCamera = useCallback(() => {
     setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
@@ -250,7 +245,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onMediaCaptured, onClose,
               onClick={toggleFlash}
               disabled={!cameraReady}
             >
-              {flashEnabled ? <FlashOn className="w-4 h-4" /> : <FlashOff className="w-4 h-4" />}
+              {flashEnabled ? <Flashlight className="w-4 h-4" /> : <FlashlightOff className="w-4 h-4" />}
             </Button>
 
             {/* Main Capture Button */}
