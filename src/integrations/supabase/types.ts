@@ -78,6 +78,44 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_history: {
+        Row: {
+          ai_response: string
+          analysis_id: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+          user_message: string
+        }
+        Insert: {
+          ai_response: string
+          analysis_id: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+          user_message: string
+        }
+        Update: {
+          ai_response?: string
+          analysis_id?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+          user_message?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_history_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analysis_results"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
