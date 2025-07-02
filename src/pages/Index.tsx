@@ -23,12 +23,16 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mb-4 animate-pulse">
-            <div className="w-6 h-6 bg-white rounded-full"></div>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mb-6 animate-pulse shadow-2xl">
+            <div className="w-8 h-8 bg-white rounded-full animate-bounce"></div>
           </div>
-          <p className="text-gray-600">جاري تحميل التطبيق...</p>
+          <h2 className="text-xl font-bold text-white mb-2">SpermAI</h2>
+          <p className="text-gray-400">جاري تحميل التطبيق...</p>
+          <div className="mt-4 w-48 h-1 bg-gray-800 rounded-full mx-auto overflow-hidden">
+            <div className="w-full h-full bg-gradient-to-r from-blue-600 to-indigo-600 animate-pulse"></div>
+          </div>
         </div>
       </div>
     );
@@ -50,11 +54,13 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
       <MobileHeader onAuthClick={() => setIsAuthOpen(true)} />
       
-      <main className="flex-1 overflow-y-auto pb-20">
-        {renderActiveTab()}
+      <main className="flex-1 overflow-y-auto pb-24 bg-gray-900">
+        <div className="min-h-full">
+          {renderActiveTab()}
+        </div>
       </main>
 
       <MobileNavigation 
