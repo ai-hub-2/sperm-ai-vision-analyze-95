@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { Upload, Video, X, AlertCircle, CheckCircle, Loader2, Moon, Sun, Cpu, Zap, Brain, Microscope } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,7 +7,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } = '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 
 interface RealVideoUploadProps {
   onAnalysisComplete: (data: any) => void;
