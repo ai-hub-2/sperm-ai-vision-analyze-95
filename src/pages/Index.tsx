@@ -15,6 +15,12 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState('home');
   const { loading } = useAuth();
 
+  const handleAnalysisComplete = (data: any) => {
+    setAnalysisData(data);
+    // التبديل تلقائياً إلى تبويب النتائج عند اكتمال التحليل
+    setActiveTab('results');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -33,7 +39,7 @@ const Index = () => {
       case 'home':
         return <HomeTab />;
       case 'analyze':
-        return <AnalyzeTab onAnalysisComplete={setAnalysisData} />;
+        return <AnalyzeTab onAnalysisComplete={handleAnalysisComplete} />;
       case 'results':
         return <ResultsTab analysisData={analysisData} />;
       case 'profile':
@@ -53,7 +59,8 @@ const Index = () => {
 
       <MobileNavigation 
         activeTab={activeTab} 
-        onTabChange={setActiveTab} 
+        onTabChange={setActiveTab}
+        hasResults={!!analysisData}
       />
 
       <AuthDialog 

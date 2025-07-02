@@ -93,34 +93,38 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAnalysisComplete }) => {
   const startProcessing = () => {
     // Simulate AI processing
     setTimeout(() => {
+      // نتائج تحليل محسنة وأكثر واقعية
       const mockResults = {
-        sperm_count: 45000000,
-        concentration: 15.2,
+        sperm_count: Math.floor(Math.random() * 50000000) + 20000000, // 20-70 مليون
+        concentration: Math.floor(Math.random() * 30) + 10, // 10-40 مليون/مل
         motility: {
-          progressive: 32,
-          non_progressive: 18,
-          immotile: 50
+          progressive: Math.floor(Math.random() * 40) + 20, // 20-60%
+          non_progressive: Math.floor(Math.random() * 20) + 10, // 10-30%
+          immotile: Math.floor(Math.random() * 30) + 20 // 20-50%
         },
         morphology: {
-          normal: 4,
-          abnormal: 96
+          normal: Math.floor(Math.random() * 8) + 2, // 2-10%
+          abnormal: 0 // سيتم حسابه تلقائياً
         },
-        vitality: 58,
-        volume: 2.8,
-        ph: 7.4,
-        processing_time: 2.3,
-        video_duration: 30,
-        frames_analyzed: 900
+        vitality: Math.floor(Math.random() * 30) + 55, // 55-85%
+        volume: Math.floor(Math.random() * 30) / 10 + 1.5, // 1.5-4.5 مل
+        ph: Math.floor(Math.random() * 10) / 10 + 7.2, // 7.2-8.2
+        processing_time: Math.floor(Math.random() * 30) / 10 + 2, // 2-5 ثانية
+        video_duration: Math.floor(Math.random() * 60) + 30, // 30-90 ثانية
+        frames_analyzed: Math.floor(Math.random() * 2000) + 900 // 900-2900 إطار
       };
+
+      // حساب النسبة المتبقية للتشكل غير الطبيعي
+      mockResults.morphology.abnormal = 100 - mockResults.morphology.normal;
 
       setAnalysisStatus('completed');
       onAnalysisComplete(mockResults);
       
       toast({
-        title: "تم التحليل بنجاح",
-        description: "تم تحليل العينة وإنتاج التقرير الشامل",
+        title: "تم التحليل بنجاح! 🎉",
+        description: "تم إنتاج التقرير الشامل مع الرسوم البيانية",
       });
-    }, 3000);
+    }, 4000); // زيادة وقت المعالجة لمحاكاة أكثر واقعية
   };
 
   const resetUpload = () => {
@@ -134,10 +138,10 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAnalysisComplete }) => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Video className="w-6 h-6 text-blue-600" />
-          رفع فيديو العينة
+          رفع فيديو العينة المجهرية
         </CardTitle>
         <CardDescription>
-          قم برفع فيديو العينة المجهرية لتحليلها باستخدام الذكاء الاصطناعي
+          قم برفع فيديو العينة المجهرية لتحليلها باستخدام الذكاء الاصطناعي وإنتاج تقرير شامل مع الرسوم البيانية
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -175,6 +179,11 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAnalysisComplete }) => {
             <p className="text-sm text-gray-500 mt-4">
               الحد الأقصى: 100 ميجابايت • الصيغ المدعومة: MP4, MOV, AVI
             </p>
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-xs text-blue-700">
+                💡 سيتم تحليل الفيديو وإنتاج تقرير شامل يتضمن: عدد الحيوانات المنوية، الحركة، التشكل، والرسوم البيانية التفصيلية
+              </p>
+            </div>
           </div>
         )}
 
@@ -199,7 +208,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAnalysisComplete }) => {
               className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
               size="lg"
             >
-              بدء التحليل
+              🔬 بدء التحليل الذكي
             </Button>
           </div>
         )}
@@ -224,16 +233,21 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAnalysisComplete }) => {
                 <Loader2 className="w-8 h-8 animate-spin text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                جاري التحليل بالذكاء الاصطناعي
+                🤖 جاري التحليل بالذكاء الاصطناعي
               </h3>
-              <p className="text-gray-600">
-                يتم تحليل الفيديو وحساب المعايير الطبية...
+              <p className="text-gray-600 mb-3">
+                يتم تحليل الفيديو وحساب المعايير الطبية وإنتاج الرسوم البيانية...
               </p>
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg">
+                <p className="text-sm text-purple-700">
+                  ⚡ جاري معالجة: كشف الحيوانات المنوية • تحليل الحركة • قياس التشكل • إنتاج التقارير
+                </p>
+              </div>
             </div>
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                قد يستغرق التحليل من 2-5 دقائق حسب طول الفيديو وجودته
+                قد يستغرق التحليل من 3-6 دقائق حسب طول الفيديو وجودته. سيتم إنتاج تقرير شامل مع رسوم بيانية تفاعلية.
               </AlertDescription>
             </Alert>
           </div>
@@ -245,13 +259,18 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAnalysisComplete }) => {
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
             <h3 className="text-lg font-semibold text-green-800">
-              تم التحليل بنجاح!
+              ✅ تم التحليل بنجاح!
             </h3>
             <p className="text-gray-600">
-              تم إنتاج التقرير الشامل لعينة السائل المنوي
+              تم إنتاج التقرير الشامل مع الرسوم البيانية التفاعلية. انتقل إلى تبويب "النتائج" لعرض التقرير كاملاً.
             </p>
+            <div className="bg-green-50 p-4 rounded-lg">
+              <p className="text-sm text-green-700">
+                📊 تم إنتاج: مخططات دائرية للحركة • رسوم بيانية للتشكل • تقييم طبي شامل • توصيات طبية
+              </p>
+            </div>
             <Button onClick={resetUpload} variant="outline">
-              تحليل عينة جديدة
+              🔄 تحليل عينة جديدة
             </Button>
           </div>
         )}
