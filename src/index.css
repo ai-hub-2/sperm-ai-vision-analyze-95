@@ -101,5 +101,46 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   }
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    body {
+      overflow-x: hidden;
+    }
+    
+    .mobile-safe-area {
+      padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus styles for accessibility */
+  button:focus-visible,
+  a:focus-visible {
+    @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
